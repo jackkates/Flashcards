@@ -2,7 +2,6 @@ package com.jackkates.flashcards;
 
 import android.app.ListActivity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.jackkates.flashcards.data.Set;
+import com.jackkates.flashcards.quizlet.QuizletDatabase;
 import com.jackkates.flashcards.quizlet.SetListRequest;
 
 import java.util.List;
@@ -22,6 +22,7 @@ import java.util.List;
 
 public class MainActivity extends ListActivity {
 
+    public static final String SET_ACTIVITY_ID_KEY = "SetActivityIDKey";
     private final String TAG = "MainActivity";
     List<Set> sets;
 
@@ -35,7 +36,7 @@ public class MainActivity extends ListActivity {
 
 
     private void fireRequest() {
-        String url = getString(R.string.quizlet_url);
+        String url = "https://api.quizlet.com/2.0/users/jackkates11/sets?access_token=819b7ac70db0f2bb9c2b4e8a0a22879dab663b14&whitespace=1";
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -43,6 +44,7 @@ public class MainActivity extends ListActivity {
             @Override
             public void onResponse(Object response) {
                 sets = (List<Set>) response;
+                storeSets();
                 updateListView();
 
             }
@@ -56,9 +58,19 @@ public class MainActivity extends ListActivity {
         queue.add(request);
     }
 
+    private void storeSets() {
+        QuizletDatabase.putAllSets(sets);
+    }
+
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Set set = sets.get(position);
+        int setID = sets.get(position).getID();
+
+        Log.d(TAG, String.valueOf(setID));
+
+        Intent intent = new Intent(MainActivity.this, CardListActivity.class);
+        intent.putExtra(SET_ACTIVITY_ID_KEY, setID);
+        startActivity(intent);
     }
 
     private void updateListView() {
@@ -69,7 +81,7 @@ public class MainActivity extends ListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -85,15 +97,5 @@ public class MainActivity extends ListActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-    public void authorizePressed(View view) {
-        Uri uri = Uri.parse("https://quizlet.com/authorize?response_type=code&client_id=c29cpp29Gf" +
-                "&scope=read&state=RANDOM_STRING&redirect_uri=http://jackkates.com");
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
-
-
     }
 }

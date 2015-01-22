@@ -6,5 +6,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_authorization">AuthorizationActivity</string>
     <string name="quizlet_url"><![CDATA[https://api.quizlet.com/2.0/users/jackkates11/sets?access_token=819b7ac70db0f2bb9c2b4e8a0a22879dab663b14&whitespace=1]]></string>
+    <string name="card_list_name">Term Listing</string>
 
 </resources>

@@ -31,8 +31,8 @@ public class QuizletSetListAdapter extends ArrayAdapter<Set> {
             convertView = inflater.inflate(R.layout.set_row, parent, false);
 
             holder = new ViewHolder();
-            holder.setTitleText = (TextView) convertView.findViewById(R.id.set_title);
-            holder.termCountText = (TextView) convertView.findViewById(R.id.term_count);
+            holder.setTitleText = (TextView) convertView.findViewById(R.id.term_text);
+            holder.termCountText = (TextView) convertView.findViewById(R.id.definition_text);
 
         } else {
             holder = (ViewHolder) convertView.getTag();
