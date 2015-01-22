@@ -1,13 +1,13 @@
 package com.jackkates.flashcards;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jackkates.flashcards.data.Card;
@@ -17,34 +17,35 @@ import com.jackkates.flashcards.quizlet.QuizletDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by jackkates on 1/21/15.
- */
-public class CardListActivity extends ListActivity {
+
+public class CardListActivity extends ActionBarActivity {
 
     private final String TAG = "CardListActivity";
 
     private List<Card> cardList;
+
+    private ListView listView;
     private CardListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_card_list);
+
+        listView = (ListView) findViewById(R.id.list_view);
 
         int id = getIntent().getIntExtra(MainActivity.SET_ACTIVITY_ID_KEY, 0);
 
         Set set = QuizletDatabase.getSet(id);
-        Log.d(TAG, set.getTitle());
 
         if (set != null) {
-            Log.d(TAG, set.getTitle());
             cardList = set.getCards();
         } else {
             cardList = new ArrayList<>();
         }
 
         adapter = new CardListAdapter(this, cardList);
-        setListAdapter(adapter);
+        listView.setAdapter(adapter);
     }
 
     private static class CardListAdapter extends ArrayAdapter<Card> {

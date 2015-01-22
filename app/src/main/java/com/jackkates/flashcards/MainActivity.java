@@ -1,8 +1,8 @@
 package com.jackkates.flashcards;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +21,7 @@ import com.jackkates.flashcards.quizlet.SetListRequest;
 import java.util.List;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 
     public static final String SET_ACTIVITY_ID_KEY = "SetActivityIDKey";
     private final String TAG = "MainActivity";
@@ -76,8 +76,6 @@ public class MainActivity extends Activity {
 
     protected void onListItemClick(View v, int position, long id) {
         int setID = sets.get(position).getID();
-
-        Log.d(TAG, String.valueOf(setID));
 
         Intent intent = new Intent(MainActivity.this, CardListActivity.class);
         intent.putExtra(SET_ACTIVITY_ID_KEY, setID);

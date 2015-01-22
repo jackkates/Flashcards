@@ -20,7 +20,8 @@
         </activity>
         <activity
             android:name=".CardListActivity"
-            android:label="@string/card_list_name" >
+            android:label="@string/card_list_name"
+            android:parentActivityName=".MainActivity">
         </activity>
     </application>
 
