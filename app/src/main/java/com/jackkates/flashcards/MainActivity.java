@@ -1,12 +1,13 @@
 package com.jackkates.flashcards;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.RequestQueue;
@@ -20,16 +21,27 @@ import com.jackkates.flashcards.quizlet.SetListRequest;
 import java.util.List;
 
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends Activity {
 
     public static final String SET_ACTIVITY_ID_KEY = "SetActivityIDKey";
     private final String TAG = "MainActivity";
+
+    ListView listView;
     List<Set> sets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        listView = (ListView) findViewById(R.id.list_view);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                onListItemClick(view, position, id);
+            }
+        });
 
         fireRequest();
     }
@@ -62,8 +74,7 @@ public class MainActivity extends ListActivity {
         QuizletDatabase.putAllSets(sets);
     }
 
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    protected void onListItemClick(View v, int position, long id) {
         int setID = sets.get(position).getID();
 
         Log.d(TAG, String.valueOf(setID));
@@ -74,7 +85,7 @@ public class MainActivity extends ListActivity {
     }
 
     private void updateListView() {
-        setListAdapter(new QuizletSetListAdapter(this, sets));
+        listView.setAdapter(new QuizletSetListAdapter(this, sets));
     }
 
     @Override
