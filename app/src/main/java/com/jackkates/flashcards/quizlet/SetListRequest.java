@@ -1,9 +1,12 @@
 package com.jackkates.flashcards.quizlet;
 
+import android.util.Log;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.JsonParseException;
 import com.jackkates.flashcards.data.GsonManager;
@@ -18,7 +21,7 @@ import java.util.List;
 public class SetListRequest extends Request<List<Set>> {
 
     private Response.Listener listener;
-    private String accessToken = "c4bAbERDtxtrkwNtUvyAuj2kHtvKRyB6gzx9eXR2";
+    private final String accessToken = "c4bAbERDtxtrkwNtUvyAuj2kHtvKRyB6gzx9eXR2";
 
     public SetListRequest(String url, Response.Listener listener, Response.ErrorListener errorListener) {
         super(Method.GET, url, errorListener);
@@ -29,6 +32,7 @@ public class SetListRequest extends Request<List<Set>> {
     protected Response<List<Set>> parseNetworkResponse(NetworkResponse response) {
         try {
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+            Log.d("SetListRequest", json);
             List<Set> listOfSets = GsonManager.decodeListOfSets(json);
             return Response.success(listOfSets, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
@@ -43,4 +47,8 @@ public class SetListRequest extends Request<List<Set>> {
         listener.onResponse(response);
     }
 
+    @Override
+    public void deliverError(VolleyError error) {
+        getErrorListener().onErrorResponse(error);
+    }
 }

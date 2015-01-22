@@ -63,7 +63,7 @@ public class MainActivity extends ActionBarActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Networking Error.");
+                Log.e(TAG, error.getLocalizedMessage());
             }
         });
 
@@ -106,5 +106,6 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+
     }
 }

@@ -33,15 +33,14 @@ public class CardListActivity extends ActionBarActivity {
         setContentView(R.layout.activity_card_list);
 
         listView = (ListView) findViewById(R.id.list_view);
+        cardList = new ArrayList<Card>();
 
         int id = getIntent().getIntExtra(MainActivity.SET_ACTIVITY_ID_KEY, 0);
 
         Set set = QuizletDatabase.getSet(id);
 
         if (set != null) {
-            cardList = set.getCards();
-        } else {
-            cardList = new ArrayList<>();
+            cardList.addAll(set.getCards());
         }
 
         adapter = new CardListAdapter(this, cardList);
